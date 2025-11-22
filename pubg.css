@@ -1,0 +1,191 @@
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #0b0e14;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+
+    header {
+        padding: 15px;
+        background: #11141c;
+        border-bottom: 1px solid #222;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    nav {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        background: #141922;
+        border-bottom: 1px solid #222;
+    }
+
+    nav button {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        background: #1c212e;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    nav button.active {
+        background: #2a3143;
+    }
+
+    main {
+        padding: 20px;
+    }
+
+    /* Grid for tournaments: 3 cards per row */
+    #tournaments {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        padding: 20px;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 900px) {
+        #tournaments {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+    @media (max-width: 600px) {
+        #tournaments {
+            grid-template-columns: 1fr;
+        }
+    }
+
+.tournament-card {
+    background: #141922;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 4px solid #00c3ff;   /* same accent stripe */
+    /* remove margin-bottom since grid gap handles spacing */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    transition: transform .15s ease, border-color .15s ease;
+    min-height: 140px; /* optional: make cards reasonably tall and consistent */
+}
+
+.tournament-card:hover {
+    transform: translateY(-2px);
+    border-left-color: #09e0ff;
+    background: #1a2030;
+}
+
+.tournament-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    color: #00c3ff;
+}
+
+.tournament-info {
+    font-size: 14px;
+    color: #ccc;
+    line-height: 1.4;
+}
+
+.join-btn {
+    margin-top: auto;
+    padding: 10px;
+    background: #00c3ff;
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.join-btn:hover {
+    background: #0ae1ff;
+}
+
+/* Modal */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: #1a1f2b;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 520px;
+}
+
+.modal input[type="text"],
+.modal input[type="email"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    margin-top: 5px;
+    background: #11141c;
+    color: #fff;
+}
+
+.rules-list {
+    max-height: 160px;
+    overflow: auto;
+    background: #0f1318;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #222;
+    color: #ddd;
+    font-size: 14px;
+}
+
+.agree-row {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-cancel {
+    background: #333;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.btn-pay {
+    background: #00c3ff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #000;
+    font-weight: bold;
+    border: none;
+}
+
+.btn-pay:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cod Tournaments</title>
+
+<!-- Paystack -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<link rel="stylesheet" href="pubg.css">
+
+</head>
+<body>
+
+<header>Cod— Tournaments</header>
+
+    <!-- Tournaments -->
+    <section id="tournaments" >
+<div class="tournament-card" data-id="solo" data-amount="2000">
+    <div class="tournament-header">
+        <h3>Solo Showdown</h3>
+    </div>
+    <div class="tournament-info">
+       
+        Entry Fee: ₦2,000
+    </div>
+    <button class="join-btn">Join Tournament</button>
+</div>
+
+<div class="tournament-card" data-id="duo" data-amount="2000">
+    <div class="tournament-header">
+        <h3>Duo Clash</h3>
+    </div>
+    <div class="tournament-info">
+        Date: Jan 10, 2025<br>
+        Entry Fee: ₦2,000
+    </div>
+    <button class="join-btn">Join Tournament</button>
+</div>
+<div class="tournament-card" data-id="duo" data-amount="2000">
+    <div class="tournament-header">
+        <h3>Duo Clash</h3>
+    </div>
+    <div class="tournament-info">
+        Date: Jan 10, 2025<br>
+        Entry Fee: ₦2,000
+    </div>
+    <button class="join-btn">Join Tournament</button>
+</div>
+<div class="tournament-card" data-id="duo" data-amount="2000">
+    <div class="tournament-header">
+        <h3>Duo Clash</h3>
+    </div>
+    <div class="tournament-info">
+        Date: Jan 10, 2025<br>
+        Entry Fee: ₦2,000
+    </div>
+    <button class="join-btn">Join Tournament</button>
+</div>
+
+</section>
+
+<!-- Join Modal -->
+<div class="modal-backdrop" id="payModal">
+    <div class="modal">
+        <h3>Join Tournament</h3>
+
+        <label>Player / Team Name</label>
+        <input type="text" id="playerName">
+
+        <label>Email</label>
+        <input type="email" id="playerEmail">
+
+        <div>
+            <strong>Terms & Rules (please read and agree before payment)</strong>
+            <div class="rules-list" id="modalRules">
+                <!-- rules inserted here -->
+            </div>
+        </div>
+
+        <div class="agree-row">
+            <input type="checkbox" id="agreeCheckbox">
+            <label for="agreeCheckbox">I have read and agree to the rules and terms</label>
+        </div>
+
+        <div class="actions">
+            <div class="btn-cancel" onclick="closeModal()">Cancel</div>
+            <button class="btn-pay" id="payBtn" onclick="startPayment()" disabled>Pay</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedTournament = null;
+    let selectedAmount = 0;
+
+    // Switch views
+    document.querySelectorAll("nav button").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const view = btn.getAttribute("data-view");
+            document.querySelectorAll(".view").forEach(v => v.style.display = "none");
+
+            document.getElementById(view).style.display = "block";
+        });
+    });
+
+    // Open join modal
+    document.querySelectorAll(".join-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const card = btn.closest(".tournament-card");
+            selectedTournament = card.getAttribute("data-id");
+            selectedAmount = parseInt(card.getAttribute("data-amount"));
+
+            // populate modal rules from the rules section so it's always in sync
+            const rulesSection = document.getElementById('rules');
+            if (rulesSection) {
+                document.getElementById('modalRules').innerHTML = rulesSection.innerHTML;
+            } else {
+                document.getElementById('modalRules').innerHTML = '<p>No rules defined.</p>';
+            }
+
+            // reset inputs & agreement
+            document.getElementById("playerName").value = "";
+            document.getElementById("playerEmail").value = "";
+            document.getElementById("agreeCheckbox").checked = false;
+            document.getElementById("payBtn").disabled = true;
+
+            document.getElementById("payModal").style.display = "flex";
+        });
+    });
+
+    // checkbox toggles pay button
+    document.getElementById('agreeCheckbox').addEventListener('change', function() {
+        document.getElementById('payBtn').disabled = !this.checked;
+    });
+
+    function closeModal() {
+        document.getElementById("payModal").style.display = "none";
+        // reset agreement and inputs
+        document.getElementById("agreeCheckbox").checked = false;
+        document.getElementById("payBtn").disabled = true;
+    }
+
+    // Paystack payment
+    function startPayment() {
+        const name = document.getElementById("playerName").value;
+        const email = document.getElementById("playerEmail").value;
+        const agreed = document.getElementById("agreeCheckbox").checked;
+
+        if (!name || !email) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        if (!agreed) {
+            alert("You must agree to the rules and terms before payment.");
+            return;
+        }
+
+        let handler = PaystackPop.setup({
+            key: "", // REPLACE WITH YOUR REAL KEY
+            email: email,
+            amount: selectedAmount * 100,
+            currency: "NGN",
+            callback: function (response) {
+                alert("Payment successful! Ref: " + response.reference);
+                closeModal();
+            },
+            onClose: function () {
+                alert("Payment cancelled.");
+            }
+        });
+
+        handler.openIframe();
+    }
+</script>
+
+           
+</body>
+</html>
